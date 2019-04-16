@@ -9,7 +9,7 @@ namespace ImageResizer.Plugins.EPiServer
 {
     public static class HtmlHelperExtensionsForPicture
     {
-        public static MvcHtmlString ResizePictures(this HtmlHelper helper, UrlBuilder[] urls, PictureProfile profile, string alternateText = "", string cssClass = "")
+        public static MvcHtmlString ResizePictures(this HtmlHelper helper, UrlBuilder[] urls, PictureProfile profile, string alternateText = "", string cssClass = "", bool dataObjectFitCover = false)
         {
             if(urls == null)
                 throw new ArgumentNullException(nameof(urls));
@@ -47,6 +47,12 @@ namespace ImageResizer.Plugins.EPiServer
             defaultUrl.QueryCollection["w"] = profile.DefaultWidth.ToString();
             img.Attributes.Add("src", defaultUrl.ToString());
             img.Attributes.Add("alt", alternateText);
+
+            if (dataObjectFitCover)
+            {
+                img.Attributes.Add("data-object-fit", "cover");
+            }
+
             if (!string.IsNullOrEmpty(cssClass))
                 img.Attributes.Add("class", cssClass);
 
@@ -55,22 +61,22 @@ namespace ImageResizer.Plugins.EPiServer
             return new MvcHtmlString(picture.ToString());
         }
 
-        public static MvcHtmlString ResizePictures(this HtmlHelper helper, ContentReference[] images, PictureProfile profile, string alternateText = "", string cssClass = "")
+        public static MvcHtmlString ResizePictures(this HtmlHelper helper, ContentReference[] images, PictureProfile profile, string alternateText = "", string cssClass = "", bool dataObjectFitCover = false)
         {
             if(images == null)
                 throw new ArgumentNullException(nameof(images));
 
-            return helper.ResizePictures(images.Select((c, i) => helper.ResizeImage(c, profile.SrcSetWidths[i])).ToArray(), profile, alternateText, cssClass);
+            return helper.ResizePictures(images.Select((c, i) => helper.ResizeImage(c, profile.SrcSetWidths[i])).ToArray(), profile, alternateText, cssClass, dataObjectFitCover);
         }
 
-        public static MvcHtmlString ResizePictureWithFallback(this HtmlHelper helper, ContentReference image, PictureProfile profile, string fallbackImage, string alternateText = "", string cssClass = "")
+        public static MvcHtmlString ResizePictureWithFallback(this HtmlHelper helper, ContentReference image, PictureProfile profile, string fallbackImage, string alternateText = "", string cssClass = "", bool dataObjectFitCover = false)
         {
             return image == null || image == ContentReference.EmptyReference
-                       ? ResizePicture(helper, new UrlBuilder(fallbackImage), profile, alternateText, cssClass)
-                       : ResizePicture(helper, image, profile, alternateText, cssClass);
+                       ? ResizePicture(helper, new UrlBuilder(fallbackImage), profile, alternateText, cssClass, dataObjectFitCover)
+                       : ResizePicture(helper, image, profile, alternateText, cssClass, dataObjectFitCover);
         }
 
-        public static MvcHtmlString ResizePicture(this HtmlHelper helper, UrlBuilder url, PictureProfile profile, string alternateText = "", string cssClass = "")
+        public static MvcHtmlString ResizePicture(this HtmlHelper helper, UrlBuilder url, PictureProfile profile, string alternateText = "", string cssClass = "", bool dataObjectFitCover = false)
         {
             var imgUrl = url.Clone();
             imgUrl.QueryCollection["w"] = profile.DefaultWidth.ToString();
@@ -82,18 +88,18 @@ namespace ImageResizer.Plugins.EPiServer
                                                              return $"{sourceUrl} {w}w";
                                                          }).ToArray();
 
-            return GeneratePictureElement(profile, imgUrl.ToString(), sourceSets, alternateText, cssClass);
+            return GeneratePictureElement(profile, imgUrl.ToString(), sourceSets, alternateText, cssClass, dataObjectFitCover);
         }
 
-        public static MvcHtmlString ResizePicture(this HtmlHelper helper, ContentReference image, PictureProfile profile, string alternateText = "", string cssClass = "")
+        public static MvcHtmlString ResizePicture(this HtmlHelper helper, ContentReference image, PictureProfile profile, string alternateText = "", string cssClass = "", bool dataObjectFitCover = false)
         {
             var imgUrl = helper.ResizeImage(image, profile.DefaultWidth);
             var sourceSets = profile.SrcSetWidths.Select(w => $"{helper.ResizeImage(image, w).ToString()} {w}w").ToArray();
 
-            return GeneratePictureElement(profile, imgUrl.ToString(), sourceSets, alternateText, cssClass);
+            return GeneratePictureElement(profile, imgUrl.ToString(), sourceSets, alternateText, cssClass, dataObjectFitCover);
         }
 
-        private static MvcHtmlString GeneratePictureElement(PictureProfile profile, string imgUrl, string[] sourceSets, string alternateText = "", string cssClass = "")
+        private static MvcHtmlString GeneratePictureElement(PictureProfile profile, string imgUrl, string[] sourceSets, string alternateText = "", string cssClass = "", bool dataObjectFitCover = false)
         {
             var picture = new TagBuilder("picture");
             var source = new TagBuilder("source");
@@ -106,6 +112,12 @@ namespace ImageResizer.Plugins.EPiServer
             var img = new TagBuilder("img");
             img.Attributes.Add("src", imgUrl);
             img.Attributes.Add("alt", alternateText);
+
+            if (dataObjectFitCover)
+            {
+                img.Attributes.Add("data-object-fit", "cover");
+            }
+
             if(!string.IsNullOrEmpty(cssClass))
                 img.Attributes.Add("class", cssClass);
 
