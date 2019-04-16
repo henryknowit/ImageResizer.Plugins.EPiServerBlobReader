@@ -1,18 +1,14 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>$id$</id>
-    <version>$version$</version>
-    <title>$title$</title>
-    <authors>$author$</authors>
-    <owners>$author$</owners>
-    <projectUrl>https://github.com/valdisiljuconoks/ImageResizer.Plugins.EPiServerBlobReader</projectUrl>
-    <licenseUrl>https://github.com/valdisiljuconoks/ImageResizer.Plugins.EPiServerBlobReader/blob/master/LICENSE</licenseUrl>
+    <id>Fork.Of.ImageResizer.Plugins.EPiServoerBlobReader</id>
+    <version>1.0.0</version>
+    <title>Fork Of ImageResizer Plugins EPiServoerBlobReader</title>
+    <authors>KELKPG</authors>
+    <owners>KELKPG</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>$description$</description>
-    <releaseNotes>Support for responsive picture element.</releaseNotes>
-    <copyright>Copyright 2017 (c) Valdis Iljuconoks, Tech Fellow</copyright>
-    <tags>EPiServer CMS ImageResizer Image Resizer BlobReader Blob ImageResizing Resizing ImageResizer.Net Imazen Imazen.Net</tags>
+    <description>Plugin for ImageResizer to serve and process images from EPiServer. Made by valdisiljuconoks, forked at nuget version 7.2.0</description>
+    <releaseNotes>Add custom data-attribute to img tag</releaseNotes>
     <dependencies>
       <dependency id="EPiServer.CMS.Core" version="[11.1, 12)" />
       <dependency id="ImageResizer" version="4.0.1" />

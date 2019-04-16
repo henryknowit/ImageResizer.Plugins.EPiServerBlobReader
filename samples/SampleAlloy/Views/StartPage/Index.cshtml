@@ -21,9 +21,9 @@
                              Model.CurrentPage.MDImage,
                              Model.CurrentPage.SMImage,
                              Model.CurrentPage.XSImage
-                         }, PictureProfiles.BootstrapGrid, cssClass: "sample-css-class")
+                         }, PictureProfiles.BootstrapGrid, cssClass: "sample-css-class", dataObjectFitCover: true)
 
-    @Html.ResizePicture(Model.CurrentPage.MainImage, PictureProfiles.SampleImage, cssClass: "sample-css-class")
+    @Html.ResizePicture(Model.CurrentPage.MainImage, PictureProfiles.SampleImage, cssClass: "sample-css-class", dataObjectFitCover: true)
     @Html.ResizePicture(Model.CurrentPage.MainImage.ResizeImage().Quality(10), PictureProfiles.SampleImage, cssClass: "sample-css-class")
     @Html.ResizePictureWithFallback(Model.CurrentPage.EmptyImage, PictureProfiles.SampleImage, "/noimage.jpg?scale=both", cssClass: "sample-css-class")
 </div>
